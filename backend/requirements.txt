@@ -17,7 +17,8 @@ networkx==3.3
 # Math & Signal Processing
 numpy==1.26.4
 
-# AI Assistant (Featherless AI / OpenAI API)
+# AI Assistant (Gemini primary, Featherless AI secondary)
+google-generativeai>=0.8.0
 openai>=1.0.0
 httpx==0.27.2
 
