@@ -33,12 +33,12 @@ export default function Predictions({ appState }: Props) {
       </div>
 
       {/* Network-level predictions */}
-      {predictions?.network_summary && (
+      {Boolean(predictions?.network_summary) && (
         <div className="card">
           <div style={{ fontWeight: 700, fontSize: 14, marginBottom: 16 }}>Network Forecast <span className="badge badge-cyan">AI PREDICTION</span></div>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 12 }}>
             {(['5min', '10min', '15min', '30min'] as const).map(horizon => {
-              const net = (predictions.network_summary as Record<string, unknown>)[horizon] as Record<string, unknown>;
+              const net = ((predictions?.network_summary as Record<string, unknown>)?.[horizon]) as Record<string, unknown> | undefined;
               if (!net) return null;
               return (
                 <div key={horizon} style={{ padding: 16, background: 'var(--bg-secondary)', borderRadius: 10, textAlign: 'center' }}>
@@ -79,12 +79,12 @@ export default function Predictions({ appState }: Props) {
                     {risk && <span className="badge badge-rose">OVERLOAD RISK</span>}
                   </div>
                 </div>
-                {p.recommendation && (
+                {Boolean(p.recommendation) && (
                   <div style={{ padding: 8, background: 'rgba(16,185,129,0.08)', borderRadius: 6, fontSize: 11, color: 'var(--text-secondary)', marginBottom: 10, lineHeight: 1.5 }}>
                     💡 {p.recommendation as string}
                   </div>
                 )}
-                {horizons && (
+                {Boolean(horizons) && (
                   <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 6 }}>
                     {Object.entries(horizons).map(([h, data]) => (
                       <div key={h} style={{ padding: 8, background: 'var(--bg-secondary)', borderRadius: 6, textAlign: 'center' }}>

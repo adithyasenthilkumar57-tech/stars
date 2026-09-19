@@ -141,14 +141,14 @@ function SimResult({ result }: { result: Record<string, unknown> }) {
           </div>
         ))}
       </div>
-      {result.emergency_improvement_pct && (
+      {Boolean(result.emergency_improvement_pct) && (
         <div style={{ padding: 10, background: 'rgba(244,63,94,0.08)', borderRadius: 8, marginBottom: 10, fontSize: 12 }}>
           🚨 Emergency travel time improvement: <strong style={{ color: 'var(--accent-emerald)' }}>{(result.emergency_improvement_pct as number)?.toFixed(1)}%</strong> faster
           ({(result.emergency_travel_time_classical as number)?.toFixed(0)}s → {(result.emergency_travel_time_optimized as number)?.toFixed(0)}s)
           <span className="badge badge-simulated" style={{ marginLeft: 6 }}>SIMULATED</span>
         </div>
       )}
-      {result.siren_timeline && (result.siren_timeline as Record<string, unknown>[]).length > 0 && (
+      {Boolean(result.siren_timeline && (result.siren_timeline as Record<string, unknown>[]).length > 0) && (
         <div style={{ padding: 10, background: 'rgba(245,158,11,0.08)', borderRadius: 8, fontSize: 12 }}>
           🔊 Siren events: {(result.siren_timeline as Record<string, unknown>[]).map(e => e.event as string).join(' → ')}
         </div>

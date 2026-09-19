@@ -61,17 +61,19 @@ export default function PollutionMonitor({ appState }: Props) {
         <div className="card">
           <div style={{ fontWeight: 700, fontSize: 14, marginBottom: 12 }}>Emission Estimates by Junction <span className="badge badge-estimated">ESTIMATED</span></div>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-            {(estimates.length > 0 ? estimates : appState.intersections.slice(0, 6).map(i => ({ ...(i as Record<string, unknown>), junction_label: (i as Record<string, unknown>).label }))).map((est) => {
-              const aqi = est.aqi_estimate as number || 0;
-              const cat = est.aqi_category as string || 'Unknown';
+            {(estimates.length > 0 ? estimates : appState.intersections.slice(0, 6).map(i => ({ ...(i as Record<string, unknown>), junction_label: (i as Record<string, unknown>).label }))).map((estItem) => {
+              const est = estItem as Record<string, any>;
+              const aqi = (est.aqi_estimate as number) || 0;
+              const cat = (est.aqi_category as string) || 'Unknown';
               const color = AQI_COLORS[cat] || 'var(--text-muted)';
+              const juncId = (est.intersection_id as string) || (est.id as string) || 'unknown';
               return (
-                <div key={est.intersection_id as string || est.id as string}
-                  style={{ padding: 12, background: selectedId === (est.intersection_id as string || est.id as string) ? 'rgba(0,212,255,0.05)' : 'var(--bg-secondary)', borderRadius: 8, cursor: 'pointer', border: `1px solid ${selectedId === (est.intersection_id as string || est.id as string) ? 'rgba(0,212,255,0.3)' : 'transparent'}` }}
-                  onClick={() => setSelectedId(est.intersection_id as string || est.id as string)}>
+                <div key={juncId}
+                  style={{ padding: 12, background: selectedId === juncId ? 'rgba(0,212,255,0.05)' : 'var(--bg-secondary)', borderRadius: 8, cursor: 'pointer', border: `1px solid ${selectedId === juncId ? 'rgba(0,212,255,0.3)' : 'transparent'}` }}
+                  onClick={() => setSelectedId(juncId)}>
                   <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 6 }}>
                     <strong style={{ color: 'var(--accent-cyan)' }}>{est.junction_label as string}</strong>
-                    <div style={{ display: 'flex', align: 'center', gap: 8 }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                       <span style={{ fontWeight: 700, color, fontSize: 12 }}>AQI {aqi}</span>
                       <span style={{ fontSize: 10, color, padding: '1px 6px', background: `${color}22`, borderRadius: 4 }}>{cat}</span>
                     </div>
@@ -81,7 +83,7 @@ export default function PollutionMonitor({ appState }: Props) {
                     <span>NOx: {(est.nox_g_per_hour as number)?.toFixed(3)} g/hr</span>
                     <span>Fuel: {(est.fuel_liters_per_hour as number)?.toFixed(2)} L/hr</span>
                   </div>
-                  {est.ai_insight && (
+                  {Boolean(est.ai_insight) && (
                     <div style={{ marginTop: 6, fontSize: 11, color: 'var(--text-secondary)', borderTop: '1px solid var(--border-subtle)', paddingTop: 6 }}>
                       💡 {est.ai_insight as string}
                     </div>

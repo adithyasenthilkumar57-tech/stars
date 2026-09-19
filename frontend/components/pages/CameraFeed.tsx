@@ -146,7 +146,7 @@ function CameraAnalysis({ analysis }: { analysis: Record<string, unknown> }) {
         ))}
       </div>
 
-      {a.ai_insight && (
+      {Boolean(a.ai_insight) && (
         <div style={{ padding: 10, background: 'rgba(16,185,129,0.08)', borderRadius: 8, fontSize: 12, color: 'var(--text-secondary)' }}>
           💡 {a.ai_insight as string}
         </div>
